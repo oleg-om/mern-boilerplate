@@ -1,18 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import Head from '../head'
-// import wave from '../assets/images/wave.jpg'
+import Month from './month'
+import { getAccounts } from '../../redux/reducers/accounts'
 
 const Home = () => {
-  const [counter, setCounterNew] = useState(0)
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
+  const { list } = useSelector((state) => state.accounts)
+  const months = useSelector((state) => state.months.list)
+  useEffect(() => {
+    dispatch(getAccounts(user.id))
+  }, [dispatch])
 
   return (
     <div>
       <Head title="Dashboard" />
-      <img alt="wave" src="images/wave.jpg" />
-      <button type="button" onClick={() => setCounterNew(counter + 1)}>
-        updateCounter 1
-      </button>
-      <div> Hello World Dashboard {counter} </div>
+      <Month accounts={list} months={months} />
     </div>
   )
 }

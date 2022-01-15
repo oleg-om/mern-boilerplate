@@ -2,13 +2,14 @@
 import { GET_ACCOUNTS, CREATE_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT } from '../actions/accounts'
 
 const initialState = {
-  list: []
+  list: [],
+  isLoaded: false
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_ACCOUNTS: {
-      return { ...state, list: action.accounts }
+      return { ...state, list: action.accounts, isLoaded: true }
     }
     case CREATE_ACCOUNT: {
       return { ...state, list: [...state.list, action.account] }

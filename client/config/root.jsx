@@ -81,7 +81,7 @@ const RootComponent = (props) => {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <OnlyAnonymousRoute exact path="/accounts" component={Accounts} />
+            <PrivateRoute exact path="/accounts" component={Accounts} />
             <PrivateRoute exact path="/dashboard" component={Home} />
             <PrivateRoute exact path="/hidden-route" component={DummyView} />
             <OnlyAnonymousRoute exact path="/anonymous-route" component={DummyView} />

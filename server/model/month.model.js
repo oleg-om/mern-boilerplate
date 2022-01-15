@@ -19,7 +19,7 @@ const Month = new mongoose.Schema({
     required: false
   },
   exchange: {
-    type: String,
+    type: Object,
     required: false
   },
   id: {
@@ -29,7 +29,8 @@ const Month = new mongoose.Schema({
   },
   date: {
     type: Date,
-    required: false
+    required: false,
+    default: () => new Date()
   }
 })
 

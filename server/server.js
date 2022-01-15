@@ -13,6 +13,7 @@ const connectDatabase = require('./services/mongoose')
 const userRoutes = require('./routes/user.routes')
 const generalRouter = require('./routes/general')
 const accountRouter = require('./routes/account')
+const monthRouter = require('./routes/month')
 
 const takeProducts = require('./services/updateExchange')
 require('colors')
@@ -28,7 +29,7 @@ try {
 let connections = []
 
 connectDatabase()
-setInterval(takeProducts, 36000000)
+setInterval(takeProducts, 3600000)
 
 const port = process.env.PORT || 8090
 const server = express()
@@ -51,10 +52,7 @@ userRoutes(server)
 
 server.use('/api/', generalRouter)
 server.use('/api/', accountRouter)
-
-server.get('/123', (req, res) => {
-  res.send('hello world')
-})
+server.use('/api/', monthRouter)
 
 server.use('/api/', (req, res) => {
   res.status(404)
@@ -63,7 +61,7 @@ server.use('/api/', (req, res) => {
 
 const [htmlStart, htmlEnd] = Html({
   body: 'separator',
-  title: 'Skillcrucial'
+  title: 'Money'
 }).split('separator')
 
 server.get('/', (req, res) => {
