@@ -5,7 +5,7 @@ import { Switch, Route, Redirect, StaticRouter } from 'react-router-dom'
 
 import store, { history } from '../redux'
 
-import Home from '../components/dashboard/home'
+import Home from '../components/dashboard'
 import DummyView from '../components/dummy-view-old'
 import NotFound from '../components/404'
 import Login from '../components/login'
@@ -16,13 +16,14 @@ import setupInterceptors from '../services/setupInterceptors'
 import Profile from '../components/profile'
 import AuthVerify from '../common/AuthVerify'
 import Navbar from '../components/navbar'
+import Accounts from '../components/accounts'
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const user = useSelector((state) => state.auth.user)
-  const token = useSelector((state) => state.auth.user.accessToken)
+  // const token = useSelector((state) => state.auth.user.accessToken)
 
   const func = (props) => {
-    if (!!user && !!user.username && !!token) <Redirect to={{ pathname: '/' }} />
+    if (!user) <Redirect to={{ pathname: '/' }} />
     return <Component {...props} />
   }
 
@@ -31,10 +32,10 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const user = useSelector((state) => state.auth.user)
-  const token = useSelector((state) => state.auth.user.accessToken)
+  // const token = useSelector((state) => state.auth.user.accessToken)
 
   const func = (props) => {
-    if (!!user && !!user.name && !!token) return <Component {...props} />
+    if (user) return <Component {...props} />
 
     return (
       <Redirect
@@ -80,7 +81,8 @@ const RootComponent = (props) => {
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/dashboard" component={Home} />
+            <OnlyAnonymousRoute exact path="/accounts" component={Accounts} />
+            <PrivateRoute exact path="/dashboard" component={Home} />
             <PrivateRoute exact path="/hidden-route" component={DummyView} />
             <OnlyAnonymousRoute exact path="/anonymous-route" component={DummyView} />
 

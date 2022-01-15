@@ -12,7 +12,6 @@ const Account = new mongoose.Schema({
   },
   status: {
     type: String,
-    required: true,
     default: 'active'
   },
   place: {
@@ -28,9 +27,14 @@ const Account = new mongoose.Schema({
     unique: true,
     default: () => uuid.v4()
   },
+  userId: {
+    type: String,
+    required: true
+  },
   date: {
     type: Date,
-    required: false
+    required: false,
+    default: () => new Date()
   }
 })
 

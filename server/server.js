@@ -12,6 +12,7 @@ import Html from '../client/html'
 const connectDatabase = require('./services/mongoose')
 const userRoutes = require('./routes/user.routes')
 const generalRouter = require('./routes/general')
+const accountRouter = require('./routes/account')
 
 const takeProducts = require('./services/updateExchange')
 require('colors')
@@ -33,7 +34,9 @@ const port = process.env.PORT || 8090
 const server = express()
 
 const middleware = [
-  cors(),
+  cors({
+    origin: 'http://localhost:8087/'
+  }),
   express.static(path.resolve(__dirname, '../dist/assets')),
   express.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
   express.json({ limit: '50mb', extended: true }),
@@ -47,6 +50,7 @@ require('./routes/auth.routes')(server)
 userRoutes(server)
 
 server.use('/api/', generalRouter)
+server.use('/api/', accountRouter)
 
 server.get('/123', (req, res) => {
   res.send('hello world')

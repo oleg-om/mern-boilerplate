@@ -6,7 +6,7 @@ import { faPlusCircle, faBell, faHeart } from '@fortawesome/free-solid-svg-icons
 const Navbar = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
   return (
-    <nav className="navbar navbar-expand-lg fixed-top bg-light navbar-light">
+    <nav className="navbar navbar-expand-lg bg-light navbar-light">
       <div className="container">
         <a className="navbar-brand" href="#">
           <img
@@ -31,9 +31,9 @@ const Navbar = () => {
         <div className="collapse navbar-collapse" id="navbarSupportedContent">
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
-              <a className="nav-link mx-2" href="#!">
+              <a className="nav-link mx-2" href="/accounts">
                 <FontAwesomeIcon icon={faPlusCircle} />
-                Post
+                Accounts
               </a>
             </li>
             <li className="nav-item">
@@ -49,8 +49,8 @@ const Navbar = () => {
               </a>
             </li>
             <li className="nav-item ms-3">
-              <a className="btn bg-black text-white rounded-lg" href="#!">
-                {currentUser.email ? currentUser.email : 'Sign in'}
+              <a className="btn bg-black text-white rounded-lg" href="/login">
+                {currentUser && currentUser.email ? currentUser.email : 'Sign in'}
               </a>
             </li>
           </ul>

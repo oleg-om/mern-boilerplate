@@ -1,7 +1,7 @@
 import api from './api'
 import TokenService from './token.service'
 
-const API_URL = 'http://localhost:8090/api/auth/'
+const API_URL = 'http://localhost:8087/api/auth/'
 
 const register = (username, email, password) => {
   return api.post(`${API_URL}signup`, {

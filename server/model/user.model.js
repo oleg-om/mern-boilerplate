@@ -19,6 +19,10 @@ const User = new mongoose.Schema({
     unique: true,
     default: () => uuid.v4()
   },
+  lang: {
+    type: String,
+    default: () => 'ENG'
+  },
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,

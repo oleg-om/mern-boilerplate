@@ -5,8 +5,8 @@ exports.getAll = async (req, res) => {
   return res.json({ status: 'ok', data: list })
 }
 
-exports.getOne = async (req, res) => {
-  const list = await Schema.findOne({ id: req.params.id })
+exports.getById = async (req, res) => {
+  const list = await Schema.find({ userId: req.params.id })
   return res.json({ status: 'ok', data: list })
 }
 
