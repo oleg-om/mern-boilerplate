@@ -5,9 +5,32 @@ exports.getAll = async (req, res) => {
   return res.json({ status: 'ok', data: list })
 }
 
-exports.getById = async (req, res) => {
-  const list = await Schema.find({ userId: req.params.id })
-  return res.json({ status: 'ok', data: list })
+// exports.getById = async (req, res) => {
+//   const list = await Schema.find({ userId: req.params.id })
+//   return res.json({ status: 'ok', data: list })
+// }
+
+exports.getByPage = async (req, res) => {
+  const { page, id } = req.params
+  try {
+    const LIMIT = 1 // process.env.NUMBER_OF_PAGES
+    const startIndex = (Number(page) - 1) * LIMIT // get the starting index of every page
+
+    const total = await Schema.countDocuments({ userId: id })
+    const posts = await Schema.find({ userId: id })
+      // .sort({ id_autoparts: -1 })
+      .limit(LIMIT)
+      .skip(startIndex)
+
+    res.json({
+      status: 'ok',
+      data: posts,
+      currentPage: Number(page),
+      numberOfPages: Math.ceil(total / LIMIT)
+    })
+  } catch (error) {
+    res.status(404).json({ message: error.message })
+  }
 }
 
 exports.update = async (req, res) => {

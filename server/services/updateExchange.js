@@ -3,13 +3,13 @@ const axios = require('axios')
 const Schema = require('../model/general.model')
 
 async function takeProducts() {
-  const currency = axios.get(`https://api.exmo.com/v1/ticker/`)
+  const currency = axios.get(process.env.CURRENCY_API)
   const cur = await currency
 
   const { data } = cur
-
   const body = {
-    USD: data.USD_RUB.sell_price,
+    USD: data.Valute.USD.Value,
+    EUR: data.Valute.EUR.Value,
     updateDate: new Date()
   }
 
@@ -18,7 +18,9 @@ async function takeProducts() {
     { $set: body },
     { upsert: false, useFindAndModify: false }
   )
-  console.log('exchange rates are updated')
+  console.log(
+    `exchange rates are updated, USD: ${data.Valute.USD.Value}, EUR: ${data.Valute.EUR.Value}`
+  )
 }
 
 module.exports = takeProducts

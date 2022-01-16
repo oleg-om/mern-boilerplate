@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import { Modal, Button } from 'react-bootstrap'
+import { Modal } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faEdit,
@@ -18,6 +18,7 @@ import {
   deleteAccount
 } from '../redux/reducers/accounts'
 import Head from './head'
+import Pagination from './common/pagination'
 
 const getCurrencySign = (sign) => {
   const getSign = () => {
@@ -112,17 +113,42 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
               })}
             </select>
           </div>
-
-          <button type="submit" className="btn btn-primary" onClick={func}>
-            Submit
-          </button>
-          <button type="submit" className="btn btn-primary ms-2" onClick={onCancel}>
-            Cancel
-          </button>
-        </form>{' '}
+        </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>Close</Button>
+        <button type="submit" className="btn btn-primary" onClick={func}>
+          Submit
+        </button>
+        <button type="submit" className="btn btn-danger ms-2" onClick={onCancel}>
+          Cancel
+        </button>
+      </Modal.Footer>
+    </Modal>
+  )
+}
+
+const RemoveAccount = ({ func, onHide, show, name }) => {
+  return (
+    <Modal
+      size="md"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+      show={show}
+      onHide={onHide}
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Are you shure?</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>Account {name} will be deleted</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <button type="submit" className="btn btn-primary" onClick={func}>
+          Submit
+        </button>
+        <button type="submit" className="btn btn-danger ms-2" onClick={onHide}>
+          Cancel
+        </button>
       </Modal.Footer>
     </Modal>
   )
@@ -131,14 +157,16 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
 const Accounts = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
-  const { list, isLoaded } = useSelector((state) => state.accounts)
+  const { list, isLoaded, numberOfPages } = useSelector((state) => state.accounts)
+  const [page, setPage] = useState(1)
 
   useEffect(() => {
-    dispatch(getAccounts(user.id))
-  }, [dispatch])
+    dispatch(getAccounts(user.id, page))
+  }, [dispatch, page])
 
   const [type, setType] = useState('list')
   const [id, setId] = useState('')
+  const [itemName, setItemName] = useState('')
 
   const [state, setState] = useState({
     name: '',
@@ -188,6 +216,7 @@ const Accounts = () => {
     }
   }
   const [modalShow, setModalShow] = useState(false)
+  const [modalRemove, setModalRemove] = useState(false)
 
   const onEdit = (acc) => {
     setType('edit')
@@ -204,8 +233,15 @@ const Accounts = () => {
     clearState()
   }
 
-  const onDelete = (itemId) => {
-    dispatch(deleteAccount(itemId))
+  const onDelete = (item) => {
+    setModalRemove(true)
+    setId(item.id)
+    setItemName(item.name)
+  }
+
+  const deleteIt = () => {
+    dispatch(deleteAccount(id))
+    setModalRemove(false)
     notify('Account is deleted')
   }
 
@@ -235,14 +271,14 @@ const Accounts = () => {
               <button
                 type="button"
                 className="btn btn-outline-danger ms-2"
-                onClick={() => onDelete(it.id)}
+                onClick={() => onDelete(it)}
               >
                 <FontAwesomeIcon icon={faTrashAlt} />
               </button>
             </span>
           </div>
         ))}
-      {isLoaded && list.length <= 0 && <p>List is empty</p>}
+      {isLoaded && list && list.length <= 0 && <p>List is empty</p>}
       {!isLoaded && (
         <div className="d-flex justify-content-center  m-5">
           <div className="spinner-border" role="status">
@@ -250,6 +286,7 @@ const Accounts = () => {
           </div>
         </div>
       )}
+      <Pagination quantity={numberOfPages} active={page} func={setPage} />
       <button type="button" className="btn btn-success" onClick={() => onAdd()}>
         Add new account
       </button>
@@ -273,6 +310,14 @@ const Accounts = () => {
           show={modalShow}
           onHide={() => setModalShow(false)}
           type={type}
+        />
+      )}
+      {modalRemove && (
+        <RemoveAccount
+          func={deleteIt}
+          show={modalRemove}
+          onHide={() => setModalRemove(false)}
+          name={itemName}
         />
       )}
     </div>

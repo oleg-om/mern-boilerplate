@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle, faBell } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faBell, faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
   const { user: currentUser } = useSelector((state) => state.auth)
@@ -32,14 +32,12 @@ const Navbar = () => {
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
               <a className="nav-link mx-2" href="/accounts">
-                <FontAwesomeIcon icon={faPlusCircle} />
-                Accounts
+                <FontAwesomeIcon icon={faPlusCircle} /> Accounts
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link mx-2" href="/dashboard">
-                <FontAwesomeIcon icon={faBell} />
-                Dashboard
+                <FontAwesomeIcon icon={faBell} /> Dashboard
               </a>
             </li>
             {/* <li className="nav-item">
@@ -50,6 +48,7 @@ const Navbar = () => {
             </li> */}
             <li className="nav-item ms-3">
               <a className="btn bg-black text-white rounded-lg" href="/login">
+                <FontAwesomeIcon icon={faUser} />{' '}
                 {currentUser && currentUser.email ? currentUser.email : 'Sign in'}
               </a>
             </li>

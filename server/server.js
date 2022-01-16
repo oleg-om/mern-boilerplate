@@ -30,6 +30,7 @@ let connections = []
 
 connectDatabase()
 setInterval(takeProducts, 3600000)
+takeProducts()
 
 const port = process.env.PORT || 8090
 const server = express()

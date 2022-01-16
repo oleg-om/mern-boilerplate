@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-
+// import GoogleLogin from 'react-google-login'
 import { login } from '../redux/actions/auth'
 
 const Login = (props) => {
@@ -79,6 +79,13 @@ const Login = (props) => {
               {loading && <span className="spinner-border spinner-border-sm" />}
               <span>Login</span>
             </button>
+            {/* <GoogleLogin
+    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+    buttonText="Log in with Google"
+    onSuccess={handleLogin}
+    onFailure={handleLogin}
+    cookiePolicy='single_host_origin'
+/> */}
           </div>
 
           {message && (

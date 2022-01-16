@@ -30,8 +30,24 @@ const logout = () => {
   TokenService.removeUser()
 }
 
+// const googleLogin = async (googleData) => {
+//   const res = await fetch('/api/auth/google', {
+//     method: 'POST',
+//     body: JSON.stringify({
+//       token: googleData.tokenId
+//     }),
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   })
+//   const data = await res.json()
+//   // store returned user somehow
+//   TokenService.setUser(data)
+// }
+
 export default {
   register,
   login,
   logout
+  // googleLogin
 }

@@ -3,30 +3,40 @@ import { GET_ACCOUNTS, CREATE_ACCOUNT, UPDATE_ACCOUNT, DELETE_ACCOUNT } from '..
 
 const initialState = {
   list: [],
-  isLoaded: false
+  isLoaded: false,
+  currentPage: 1,
+  numberOfPages: 1
 }
 
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_ACCOUNTS: {
-      return { ...state, list: action.accounts, isLoaded: true }
+      return {
+        ...state,
+        list: action.accounts,
+        isLoaded: true,
+        currentPage: action.currentPage,
+        numberOfPages: action.numberOfPages
+      }
     }
     case CREATE_ACCOUNT: {
-      return { ...state, list: [...state.list, action.account] }
+      return { ...state, list: [...state.list, action.account], isLoaded: true }
     }
     case UPDATE_ACCOUNT: {
       return {
         ...state,
         list: state.list.map((it) => {
           return action.account.id === it.id ? action.account : it
-        })
+        }),
+        isLoaded: true
       }
     }
     case DELETE_ACCOUNT: {
       return {
         list: state.list.filter((it) => {
           return action.id !== it.id
-        })
+        }),
+        isLoaded: true
       }
     }
     default:
@@ -34,12 +44,12 @@ export default (state = initialState, action) => {
   }
 }
 
-export function getAccounts(id) {
+export function getAccounts(id, page) {
   return (dispatch) => {
-    fetch(`/api/account/${id}`)
+    fetch(`/api/account/${id}/${page}`)
       .then((r) => r.json())
-      .then(({ data: accounts }) => {
-        dispatch({ type: GET_ACCOUNTS, accounts })
+      .then(({ data: accounts, currentPage, numberOfPages }) => {
+        dispatch({ type: GET_ACCOUNTS, accounts, currentPage, numberOfPages })
       })
   }
 }
