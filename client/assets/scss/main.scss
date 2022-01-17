@@ -30,3 +30,83 @@ label {
     -webkit-border-radius: 50%;
     border-radius: 50%;
   }
+
+  // common
+
+  button {
+    border: 0;
+    background-color: #fff;
+  }
+
+
+// general
+
+  .z-negative-3 {
+    z-index: -1;
+  }
+
+
+  // colors
+
+  $sunray__color: #EDAE49;
+  $red__color: #D1495B;
+  $sea__color: #00798C;
+  $lapis__color: #30638E;
+  $indigo__color: #003D5B;
+  $blue__color: #6DD3CE;
+  $violet__color: #8332AC;
+
+  .sunray__text {
+    color: $sunray__color;
+  }
+  .red__text {
+    color: $red__color;
+  }
+  .sea__text {
+    color: $sea__color;
+  }
+  .lapis__text {
+    color: $lapis__color;
+  }
+  .indigo__text {
+    color: $indigo__color;
+  }
+  .blue__text {
+    color: $blue__color;
+  }
+  .violet__text {
+    color: $violet__color;
+  }
+
+  // bg colors
+
+  .sunray__bg {
+    background-color: $sunray__color;
+  }
+  .red__bg {
+    background-color: $red__color;
+  }
+  .sea__bg {
+    background-color: $sea__color;
+  }
+  .lapis__bg {
+    background-color: $lapis__color;
+  }
+  .indigo__bg {
+    background-color: $indigo__color;
+  }
+  .blue__bg {
+    background-color: $blue__color;
+  }
+  .violet__bg {
+    background-color: $violet__color;
+  }
+
+  // other
+
+  .color__icon {
+    min-height: 50px;
+  }
+  .active__icon {
+    border: 4px solid $indigo__color;
+  }

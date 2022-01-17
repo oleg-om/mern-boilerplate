@@ -1,42 +1,40 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { ToastContainer, toast } from 'react-toastify'
+import cx from 'classnames'
 import 'react-toastify/dist/ReactToastify.css'
 import { Modal } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import {
-  faEdit,
-  faTrashAlt,
-  faRubleSign,
-  faDollarSign,
-  faEuroSign
-} from '@fortawesome/free-solid-svg-icons'
-import {
-  createAccount,
-  getAccountsByPage,
-  updateAccount,
-  deleteAccount
-} from '../redux/reducers/accounts'
+  createCategory,
+  getCategorysByPage,
+  updateCategory,
+  deleteCategory
+} from '../redux/reducers/categories'
 import Head from './head'
 import Pagination from './common/pagination'
+import GetIcon from './common/icons'
+import IconList from '../lists/categoryIcons'
+import IconColors from '../lists/categoryColors'
 
-const getCurrencySign = (sign) => {
-  const getSign = () => {
-    if (sign === 'RUB') {
-      return faRubleSign
-    }
-    if (sign === 'USD') {
-      return faDollarSign
-    }
-    if (sign === 'EUR') {
-      return faEuroSign
-    }
-    return 'faQuestionCircle'
-  }
-  return <FontAwesomeIcon icon={getSign()} className="text-secondary" />
-}
+// const getCurrencySign = (sign) => {
+//   const getSign = () => {
+//     if (sign === 'RUB') {
+//       return faRubleSign
+//     }
+//     if (sign === 'USD') {
+//       return faDollarSign
+//     }
+//     if (sign === 'EUR') {
+//       return faEuroSign
+//     }
+//     return 'faQuestionCircle'
+//   }
+//   return <FontAwesomeIcon icon={getSign()} className="text-secondary" />
+// }
 
-const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => {
+const AddCategory = ({ func, state, onChange, onCancel, onHide, show, type, onDelete }) => {
   return (
     <Modal
       size="md"
@@ -47,14 +45,14 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {type === 'add' ? 'Add account' : 'Edit account'}
+          {type === 'add' ? 'Add category' : 'Edit category'}
         </Modal.Title>
       </Modal.Header>{' '}
       <Modal.Body>
         <form>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
-              Account name
+              Category name
             </label>
             <input
               type="text"
@@ -68,31 +66,46 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
           </div>
           <div className="mb-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
-              Account currency
+              Choose category icon
             </label>
-            <select
-              className="form-control"
-              id="exampleInputPassword1"
-              value={state.currency}
-              onChange={onChange}
-              name="currency"
-            >
-              {' '}
-              <option value="" disabled>
-                Choose currency
-              </option>
-              {['RUB', 'USD', 'EUR'].map((it) => {
-                return (
-                  <option value={it} key={it}>
-                    {it}
-                  </option>
-                )
-              })}
-            </select>
+            <div className="d-flex flex-wrap justify-content-between my-2">
+              {IconList.map((icon) => (
+                <div className={`col-2 m-2 text-center ${state.color}__text`} key={icon}>
+                  <button
+                    type="button"
+                    onClick={onChange}
+                    name="icon"
+                    value={icon}
+                    className={cx(`  ${state.color}__text`, {
+                      active__icon: state.icon === icon
+                    })}
+                  >
+                    <FontAwesomeIcon icon={GetIcon(icon)} size="2x" />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <label htmlFor="exampleInputPassword1" className="form-label">
+              Choose icon color
+            </label>
+            <span className="d-flex flex-row justify-content-center">
+              {IconColors.map((color) => (
+                <button
+                  type="button"
+                  onClick={onChange}
+                  name="color"
+                  value={color}
+                  className={`col-2 m-2 text-center ${color}__bg color__icon ${
+                    state.color === color ? 'active__icon' : ''
+                  }`}
+                  key={color}
+                />
+              ))}
+            </span>
           </div>
           <div className="mb-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
-              Account type
+              Category type
             </label>
             <select
               className="form-control"
@@ -104,7 +117,7 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
               <option value="" disabled>
                 Choose type
               </option>
-              {['bank', 'cash'].map((it) => {
+              {['income', 'costs'].map((it) => {
                 return (
                   <option value={it} key={it}>
                     {it}
@@ -119,15 +132,25 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
         <button type="submit" className="btn btn-primary" onClick={func}>
           Submit
         </button>
-        <button type="submit" className="btn btn-danger ms-2" onClick={onCancel}>
-          Cancel
-        </button>
+        {type === 'add' ? (
+          <button type="submit" className="btn btn-danger ms-2" onClick={onCancel}>
+            Cancel
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="btn btn-outline-danger ms-2"
+            onClick={() => onDelete(state)}
+          >
+            <FontAwesomeIcon icon={faTrashAlt} />
+          </button>
+        )}
       </Modal.Footer>
     </Modal>
   )
 }
 
-const RemoveAccount = ({ func, onHide, show, name }) => {
+const RemoveCategory = ({ func, onHide, show, name }) => {
   return (
     <Modal
       size="md"
@@ -140,7 +163,7 @@ const RemoveAccount = ({ func, onHide, show, name }) => {
         <Modal.Title id="contained-modal-title-vcenter">Are you shure?</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Account {name} will be deleted</p>
+        <p>Category {name} will be deleted</p>
       </Modal.Body>
       <Modal.Footer>
         <button type="submit" className="btn btn-primary" onClick={func}>
@@ -154,14 +177,14 @@ const RemoveAccount = ({ func, onHide, show, name }) => {
   )
 }
 
-const Accounts = () => {
+const Categories = () => {
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
-  const { list, isLoaded, numberOfPages } = useSelector((state) => state.accounts)
+  const { list, isLoaded, numberOfPages } = useSelector((state) => state.categories)
   const [page, setPage] = useState(1)
 
   useEffect(() => {
-    dispatch(getAccountsByPage(user.id, page))
+    dispatch(getCategorysByPage(user.id, page))
   }, [dispatch, page])
 
   const [type, setType] = useState('list')
@@ -170,16 +193,18 @@ const Accounts = () => {
 
   const [state, setState] = useState({
     name: '',
-    currency: '',
+    icon: 'faHeart',
     type: '',
+    color: 'sunray',
     userId: user.id
   })
 
   const clearState = () => {
     setState({
       name: '',
-      currency: '',
+      icon: 'faHeart',
       type: '',
+      color: 'sunray',
       userId: user.id
     })
     setId('')
@@ -195,9 +220,9 @@ const Accounts = () => {
 
   const notify = (notification) => toast(notification)
   const create = () => {
-    if (state.name && state.currency && state.type) {
-      dispatch(createAccount(state))
-      notify('Account is created')
+    if (state.name && state.icon && state.type) {
+      dispatch(createCategory(state))
+      notify('Category is created')
       setType('list')
       clearState()
     } else {
@@ -206,9 +231,9 @@ const Accounts = () => {
   }
 
   const update = () => {
-    if (state.name && state.currency && state.type) {
-      dispatch(updateAccount(id, state))
-      notify('Account is updated')
+    if (state.name && state.icon && state.type) {
+      dispatch(updateCategory(id, state))
+      notify('Category is updated')
       setType('list')
       clearState()
     } else {
@@ -237,20 +262,21 @@ const Accounts = () => {
     setModalRemove(true)
     setId(item.id)
     setItemName(item.name)
+    setModalShow(false)
   }
 
   const deleteIt = () => {
-    dispatch(deleteAccount(id))
+    dispatch(deleteCategory(id))
     setModalRemove(false)
-    notify('Account is deleted')
+    notify('Category is deleted')
   }
 
   return (
     <div className="container">
-      <Head title="Accounts" />
+      <Head title="Categorys" />
       <ToastContainer />
-      <h3>Accounts</h3>
-      {isLoaded &&
+      <h3>Categories</h3>
+      {/* {isLoaded &&
         list &&
         list.length > 0 &&
         list.map((it) => (
@@ -277,7 +303,23 @@ const Accounts = () => {
               </button>
             </span>
           </div>
-        ))}
+        ))} */}
+      <div className="d-flex flex-wrap">
+        {isLoaded &&
+          list &&
+          list.length > 0 &&
+          list.map((it) => (
+            <button
+              key={it.id}
+              type="button"
+              onClick={() => onEdit(it)}
+              className={`${it.color}__text d-flex flex-column align-items-center m-3`}
+            >
+              <FontAwesomeIcon icon={GetIcon(it.icon)} size="2x" />
+              <p>{it.name}</p>
+            </button>
+          ))}
+      </div>
       {isLoaded && list && list.length <= 0 && <p>List is empty</p>}
       {!isLoaded && (
         <div className="d-flex justify-content-center  m-5">
@@ -288,10 +330,10 @@ const Accounts = () => {
       )}
       <Pagination quantity={numberOfPages} active={page} func={setPage} />
       <button type="button" className="btn btn-success" onClick={() => onAdd()}>
-        Add new account
+        Add new category
       </button>
       {type === 'add' && (
-        <AddAccount
+        <AddCategory
           func={create}
           state={state}
           onChange={onChange}
@@ -299,10 +341,11 @@ const Accounts = () => {
           show={modalShow}
           onHide={() => setModalShow(false)}
           type={type}
+          onDelete={onDelete}
         />
       )}
       {type === 'edit' && (
-        <AddAccount
+        <AddCategory
           func={update}
           state={state}
           onChange={onChange}
@@ -310,10 +353,11 @@ const Accounts = () => {
           show={modalShow}
           onHide={() => setModalShow(false)}
           type={type}
+          onDelete={onDelete}
         />
       )}
       {modalRemove && (
-        <RemoveAccount
+        <RemoveCategory
           func={deleteIt}
           show={modalRemove}
           onHide={() => setModalRemove(false)}
@@ -324,4 +368,4 @@ const Accounts = () => {
   )
 }
 
-export default Accounts
+export default Categories

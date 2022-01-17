@@ -1,11 +1,11 @@
 /* eslint-disable default-param-last */
 import {
-  GET_ACCOUNTS,
-  GET_ACCOUNTS_BY_PAGE,
-  CREATE_ACCOUNT,
-  UPDATE_ACCOUNT,
-  DELETE_ACCOUNT
-} from '../actions/accounts'
+  GET_CATEGORYS,
+  GET_CATEGORYS_BY_PAGE,
+  CREATE_CATEGORY,
+  UPDATE_CATEGORY,
+  DELETE_CATEGORY
+} from '../actions/categories'
 
 const initialState = {
   list: [],
@@ -16,37 +16,37 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_ACCOUNTS_BY_PAGE: {
+    case GET_CATEGORYS_BY_PAGE: {
       return {
         ...state,
-        list: action.accounts,
+        list: action.categorys,
         isLoaded: true,
         currentPage: action.currentPage,
         numberOfPages: action.numberOfPages
       }
     }
-    case GET_ACCOUNTS: {
+    case GET_CATEGORYS: {
       return {
         ...state,
-        list: action.accounts,
+        list: action.categorys,
         isLoaded: true,
         currentPage: 1,
         numberOfPages: 1
       }
     }
-    case CREATE_ACCOUNT: {
-      return { ...state, list: [...state.list, action.account], isLoaded: true }
+    case CREATE_CATEGORY: {
+      return { ...state, list: [...state.list, action.category], isLoaded: true }
     }
-    case UPDATE_ACCOUNT: {
+    case UPDATE_CATEGORY: {
       return {
         ...state,
         list: state.list.map((it) => {
-          return action.account.id === it.id ? action.account : it
+          return action.category.id === it.id ? action.category : it
         }),
         isLoaded: true
       }
     }
-    case DELETE_ACCOUNT: {
+    case DELETE_CATEGORY: {
       return {
         list: state.list.filter((it) => {
           return action.id !== it.id
@@ -59,29 +59,29 @@ export default (state = initialState, action) => {
   }
 }
 
-export function getAccounts(id) {
+export function getCategorys(id) {
   return (dispatch) => {
-    fetch(`/api/account/${id}`)
+    fetch(`/api/category/${id}`)
       .then((r) => r.json())
-      .then(({ data: accounts }) => {
-        dispatch({ type: GET_ACCOUNTS, accounts })
+      .then(({ data: categorys }) => {
+        dispatch({ type: GET_CATEGORYS, categorys })
       })
   }
 }
 
-export function getAccountsByPage(id, page) {
+export function getCategorysByPage(id, page) {
   return (dispatch) => {
-    fetch(`/api/account/${id}/${page}`)
+    fetch(`/api/category/${id}/${page}`)
       .then((r) => r.json())
-      .then(({ data: accounts, currentPage, numberOfPages }) => {
-        dispatch({ type: GET_ACCOUNTS_BY_PAGE, accounts, currentPage, numberOfPages })
+      .then(({ data: categorys, currentPage, numberOfPages }) => {
+        dispatch({ type: GET_CATEGORYS_BY_PAGE, categorys, currentPage, numberOfPages })
       })
   }
 }
 
-export function createAccount(name) {
+export function createCategory(name) {
   return (dispatch) => {
-    fetch('/api/account', {
+    fetch('/api/category', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -89,15 +89,15 @@ export function createAccount(name) {
       body: JSON.stringify(name)
     })
       .then((r) => r.json())
-      .then(({ data: account }) => {
-        dispatch({ type: CREATE_ACCOUNT, account })
+      .then(({ data: category }) => {
+        dispatch({ type: CREATE_CATEGORY, category })
       })
   }
 }
 
-export function updateAccount(id, name) {
+export function updateCategory(id, name) {
   return (dispatch) => {
-    fetch(`/api/account/${id}`, {
+    fetch(`/api/category/${id}`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json'
@@ -105,20 +105,20 @@ export function updateAccount(id, name) {
       body: JSON.stringify(name)
     })
       .then((r) => r.json())
-      .then(({ data: account }) => {
-        dispatch({ type: UPDATE_ACCOUNT, account })
+      .then(({ data: category }) => {
+        dispatch({ type: UPDATE_CATEGORY, category })
       })
   }
 }
 
-export function deleteAccount(id) {
+export function deleteCategory(id) {
   return (dispatch) => {
-    fetch(`/api/account/${id}`, {
+    fetch(`/api/category/${id}`, {
       method: 'DELETE'
     })
       .then((r) => r.json())
       .then(() => {
-        dispatch({ type: DELETE_ACCOUNT, id })
+        dispatch({ type: DELETE_CATEGORY, id })
       })
   }
 }

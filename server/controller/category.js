@@ -1,4 +1,4 @@
-const Schema = require('../model/account.model')
+const Schema = require('../model/category.model')
 
 exports.getAll = async (req, res) => {
   const list = await Schema.find({})

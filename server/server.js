@@ -14,6 +14,7 @@ const userRoutes = require('./routes/user.routes')
 const generalRouter = require('./routes/general')
 const accountRouter = require('./routes/account')
 const monthRouter = require('./routes/month')
+const categoryRouter = require('./routes/category')
 
 const takeProducts = require('./services/updateExchange')
 require('colors')
@@ -54,6 +55,7 @@ userRoutes(server)
 server.use('/api/', generalRouter)
 server.use('/api/', accountRouter)
 server.use('/api/', monthRouter)
+server.use('/api/', categoryRouter)
 
 server.use('/api/', (req, res) => {
   res.status(404)

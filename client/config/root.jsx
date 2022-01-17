@@ -17,6 +17,7 @@ import Profile from '../components/profile'
 import AuthVerify from '../common/AuthVerify'
 import Navbar from '../components/navbar'
 import Accounts from '../components/accounts'
+import Categories from '../components/categories'
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const user = useSelector((state) => state.auth.user)
@@ -82,6 +83,7 @@ const RootComponent = (props) => {
             <Route exact path="/register" component={Register} />
             <Route exact path="/profile" component={Profile} />
             <PrivateRoute exact path="/accounts" component={Accounts} />
+            <PrivateRoute exact path="/categories" component={Categories} />
             <PrivateRoute exact path="/dashboard" component={Home} />
             <PrivateRoute exact path="/hidden-route" component={DummyView} />
             <OnlyAnonymousRoute exact path="/anonymous-route" component={DummyView} />

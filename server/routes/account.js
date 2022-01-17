@@ -4,7 +4,7 @@ const accountController = require('../controller/account')
 const router = express.Router()
 
 // router.get('/account/', accountController.getAll)
-// router.get('/account/:id', accountController.getById)
+router.get('/account/:id', accountController.getById)
 router.get('/account/:id/:page', accountController.getByPage)
 router.patch('/account/:id', accountController.update)
 router.post('/account/', accountController.create)

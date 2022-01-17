@@ -4,6 +4,7 @@ import auth from './auth'
 import message from './message'
 import accounts from './accounts'
 import months from './months'
+import categories from './categories'
 
 const createRootReducer = (history) =>
   combineReducers({
@@ -11,7 +12,8 @@ const createRootReducer = (history) =>
     auth,
     message,
     accounts,
-    months
+    months,
+    categories
   })
 
 export default createRootReducer
