@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react'
 import cx from 'classnames'
+import { useTranslation } from 'react-i18next'
 
 const Pagination = ({ quantity, active, func }) => {
+  const { t } = useTranslation()
+
   const total = Number(quantity)
   const page = Number(active)
   const array = Array.from({ length: quantity }, (v, k) => k + 1).filter(
@@ -46,7 +49,7 @@ const Pagination = ({ quantity, active, func }) => {
             aria-disabled="true"
             onClick={() => (page <= 1 ? () => {} : func(page - 1))}
           >
-            Previous
+            {t('Previous')}
           </button>
         </li>
         <Numbers />
@@ -60,7 +63,7 @@ const Pagination = ({ quantity, active, func }) => {
             className="page-link"
             onClick={() => (page >= total ? () => {} : func(page + 1))}
           >
-            Next
+            {t('Next')}
           </button>
         </li>
       </ul>

@@ -1,9 +1,16 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle, faBell, faUser, faHeart } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
+  const { t, i18n } = useTranslation()
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng)
+  }
+
   const { user: currentUser } = useSelector((state) => state.auth)
   return (
     <nav className="navbar navbar-expand-lg bg-light navbar-light">
@@ -17,6 +24,12 @@ const Navbar = () => {
             height="30"
           />
         </a>
+        <button type="button" onClick={() => changeLanguage('ru')}>
+          ru
+        </button>
+        <button type="button" onClick={() => changeLanguage('en')}>
+          en
+        </button>
         <button
           className="navbar-toggler"
           type="button"
@@ -32,18 +45,18 @@ const Navbar = () => {
           <ul className="navbar-nav ms-auto align-items-center">
             <li className="nav-item">
               <a className="nav-link mx-2" href="/accounts">
-                <FontAwesomeIcon icon={faPlusCircle} /> Accounts
+                <FontAwesomeIcon icon={faPlusCircle} /> {t('Accounts')}
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link mx-2" href="/dashboard">
-                <FontAwesomeIcon icon={faBell} /> Dashboard
+                <FontAwesomeIcon icon={faBell} /> {t('Dashboard')}
               </a>
             </li>
             <li className="nav-item">
               <a className="nav-link mx-2" href="/categories">
                 <FontAwesomeIcon icon={faHeart} />
-                Categories
+                {t('Categories')}
               </a>
             </li>
             <li className="nav-item ms-3">

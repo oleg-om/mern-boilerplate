@@ -5,6 +5,8 @@ import { Switch, Route, Redirect, StaticRouter } from 'react-router-dom'
 
 import store, { history } from '../redux'
 
+import './i18'
+
 import Home from '../components/dashboard'
 import DummyView from '../components/dummy-view-old'
 import NotFound from '../components/404'

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Modal } from 'react-bootstrap'
@@ -19,6 +20,8 @@ import {
 } from '../redux/reducers/accounts'
 import Head from './head'
 import Pagination from './common/pagination'
+import currencyList from '../lists/currencies'
+import accountTypeList from '../lists/accountTypes'
 
 const getCurrencySign = (sign) => {
   const getSign = () => {
@@ -37,6 +40,7 @@ const getCurrencySign = (sign) => {
 }
 
 const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => {
+  const { t } = useTranslation()
   return (
     <Modal
       size="md"
@@ -47,14 +51,14 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {type === 'add' ? 'Add account' : 'Edit account'}
+          {type === 'add' ? t('Add account') : t('Edit account')}
         </Modal.Title>
-      </Modal.Header>{' '}
+      </Modal.Header>
       <Modal.Body>
         <form>
           <div className="mb-3">
             <label htmlFor="exampleInputEmail1" className="form-label">
-              Account name
+              {t('Account name')}
             </label>
             <input
               type="text"
@@ -68,7 +72,7 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
           </div>
           <div className="mb-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
-              Account currency
+              {t('Account currency')}
             </label>
             <select
               className="form-control"
@@ -77,14 +81,13 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
               onChange={onChange}
               name="currency"
             >
-              {' '}
               <option value="" disabled>
-                Choose currency
+                {t('Choose currency')}
               </option>
-              {['RUB', 'USD', 'EUR'].map((it) => {
+              {currencyList.map((it) => {
                 return (
                   <option value={it} key={it}>
-                    {it}
+                    {t(it)}
                   </option>
                 )
               })}
@@ -92,7 +95,7 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
           </div>
           <div className="mb-3">
             <label htmlFor="exampleInputPassword1" className="form-label">
-              Account type
+              {t('Account type')}
             </label>
             <select
               className="form-control"
@@ -102,12 +105,12 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
               name="type"
             >
               <option value="" disabled>
-                Choose type
+                {t('Choose type')}
               </option>
-              {['bank', 'cash'].map((it) => {
+              {accountTypeList.map((it) => {
                 return (
                   <option value={it} key={it}>
-                    {it}
+                    {t(it)}
                   </option>
                 )
               })}
@@ -117,10 +120,10 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
       </Modal.Body>
       <Modal.Footer>
         <button type="submit" className="btn btn-primary" onClick={func}>
-          Submit
+          {t('Submit')}
         </button>
         <button type="submit" className="btn btn-danger ms-2" onClick={onCancel}>
-          Cancel
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>
@@ -128,6 +131,7 @@ const AddAccount = ({ func, state, onChange, onCancel, onHide, show, type }) => 
 }
 
 const RemoveAccount = ({ func, onHide, show, name }) => {
+  const { t } = useTranslation()
   return (
     <Modal
       size="md"
@@ -137,17 +141,19 @@ const RemoveAccount = ({ func, onHide, show, name }) => {
       onHide={onHide}
     >
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Are you shure?</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">{t('Are you shure?')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>Account {name} will be deleted</p>
+        <p>
+          {t('Account')} {name} {t('will be deleted')}
+        </p>
       </Modal.Body>
       <Modal.Footer>
         <button type="submit" className="btn btn-primary" onClick={func}>
-          Submit
+          {t('Submit')}
         </button>
         <button type="submit" className="btn btn-danger ms-2" onClick={onHide}>
-          Cancel
+          {t('Cancel')}
         </button>
       </Modal.Footer>
     </Modal>
@@ -155,6 +161,7 @@ const RemoveAccount = ({ func, onHide, show, name }) => {
 }
 
 const Accounts = () => {
+  const { t } = useTranslation()
   const dispatch = useDispatch()
   const { user } = useSelector((state) => state.auth)
   const { list, isLoaded, numberOfPages } = useSelector((state) => state.accounts)
@@ -249,7 +256,7 @@ const Accounts = () => {
     <div className="container">
       <Head title="Accounts" />
       <ToastContainer />
-      <h3>Accounts</h3>
+      <h3>{t('Accounts')}</h3>
       {isLoaded &&
         list &&
         list.length > 0 &&
@@ -278,17 +285,17 @@ const Accounts = () => {
             </span>
           </div>
         ))}
-      {isLoaded && list && list.length <= 0 && <p>List is empty</p>}
+      {isLoaded && list && list.length <= 0 && <p>{t('List is empty')}</p>}
       {!isLoaded && (
         <div className="d-flex justify-content-center  m-5">
           <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
+            <span className="sr-only">{t('Loading')}...</span>
           </div>
         </div>
       )}
       <Pagination quantity={numberOfPages} active={page} func={setPage} />
       <button type="button" className="btn btn-success" onClick={() => onAdd()}>
-        Add new account
+        {t('Add new account')}
       </button>
       {type === 'add' && (
         <AddAccount
