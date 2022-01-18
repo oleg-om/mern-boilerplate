@@ -1,12 +1,28 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { logout } from '../redux/actions/auth'
 
-const Profile = () => {
+const Profile = (props) => {
+  const dispatch = useDispatch()
   const { user: currentUser } = useSelector((state) => state.auth)
+  const { message } = useSelector((state) => state.message)
 
   if (!currentUser) {
     return <Redirect to="/login" />
+  }
+
+  const handleLogout = () => {
+    // dispatch(logout()).then(() => {
+    //   props.history.push('/profile')
+    //   window.location.reload()
+    // })
+    // .catch(() => {
+    //   setLoading(false)
+    // })
+    dispatch(logout())
+    props.history.push('/profile')
+    window.location.reload()
   }
 
   return (
@@ -30,6 +46,17 @@ const Profile = () => {
       <ul>
         {currentUser.roles && currentUser.roles.map((role, index) => <li key={index}>{role}</li>)}
       </ul>
+      <button type="button" onClick={handleLogout} className="btn btn-primary btn-block">
+        <span>Logout</span>
+      </button>
+
+      {message && (
+        <div className="form-group">
+          <div className="alert alert-danger" role="alert">
+            {message}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

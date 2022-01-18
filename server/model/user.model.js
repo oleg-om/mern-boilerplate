@@ -23,6 +23,9 @@ const User = new mongoose.Schema({
     type: String,
     default: () => 'ENG'
   },
+  picture: {
+    type: String
+  },
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,

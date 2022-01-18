@@ -11,10 +11,10 @@ const register = (username, email, password) => {
   })
 }
 
-const login = (username, password) => {
+const login = (email, password) => {
   return api
     .post('/auth/signin', {
-      username,
+      email,
       password
     })
     .then((response) => {
@@ -28,26 +28,27 @@ const login = (username, password) => {
 
 const logout = () => {
   TokenService.removeUser()
+  return ''
 }
 
-// const googleLogin = async (googleData) => {
-//   const res = await fetch('/api/auth/google', {
-//     method: 'POST',
-//     body: JSON.stringify({
-//       token: googleData.tokenId
-//     }),
-//     headers: {
-//       'Content-Type': 'application/json'
-//     }
-//   })
-//   const data = await res.json()
-//   // store returned user somehow
-//   TokenService.setUser(data)
-// }
+const googleLogin = async (googleData) => {
+  console.log(googleData.tokenId)
+  return api
+    .post('/auth/google', {
+      token: googleData.tokenId
+    })
+    .then((response) => {
+      if (response.data.accessToken) {
+        TokenService.setUser(response.data)
+      }
+
+      return response.data
+    })
+}
 
 export default {
   register,
   login,
-  logout
-  // googleLogin
+  logout,
+  googleLogin
 }

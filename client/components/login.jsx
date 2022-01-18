@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-// import GoogleLogin from 'react-google-login'
-import { login } from '../redux/actions/auth'
+import GoogleLogin from 'react-google-login'
+import { login, loginGoogle } from '../redux/actions/auth'
 
 const Login = (props) => {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -15,7 +15,7 @@ const Login = (props) => {
   const dispatch = useDispatch()
 
   const onChangeUsername = (e) => {
-    setUsername(e.target.value)
+    setEmail(e.target.value)
   }
 
   const onChangePassword = (e) => {
@@ -23,7 +23,7 @@ const Login = (props) => {
   }
 
   const handleLogin = () => {
-    dispatch(login(username, password))
+    dispatch(login(email, password))
       .then(() => {
         props.history.push('/profile')
         window.location.reload()
@@ -31,6 +31,19 @@ const Login = (props) => {
       .catch(() => {
         setLoading(false)
       })
+  }
+  const GOOGLE_ID = process.env.REACT_APP_GOOGLE_CLIENT_ID
+
+  const handleLoginGoogle = (googleData) => {
+    dispatch(loginGoogle(googleData))
+      .then(() => {
+        // props.history.push('/profile')
+        // window.location.reload()
+      })
+      .catch(() => {
+        setLoading(false)
+      })
+    // store returned user somehow
   }
 
   if (isLoggedIn) {
@@ -48,12 +61,12 @@ const Login = (props) => {
 
         <div>
           <div className="form-group">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="email">Email</label>
             <input
               type="text"
               className="form-control"
-              name="username"
-              value={username}
+              name="email"
+              value={email}
               onChange={onChangeUsername}
             />
           </div>
@@ -79,13 +92,13 @@ const Login = (props) => {
               {loading && <span className="spinner-border spinner-border-sm" />}
               <span>Login</span>
             </button>
-            {/* <GoogleLogin
-    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-    buttonText="Log in with Google"
-    onSuccess={handleLogin}
-    onFailure={handleLogin}
-    cookiePolicy='single_host_origin'
-/> */}
+            <GoogleLogin
+              clientId={GOOGLE_ID}
+              buttonText="Log in with Google"
+              onSuccess={handleLoginGoogle}
+              onFailure={handleLoginGoogle}
+              cookiePolicy="single_host_origin"
+            />
           </div>
 
           {message && (

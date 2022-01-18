@@ -219,6 +219,9 @@ const config = {
         (res, key) => ({ ...res, [key]: JSON.stringify(process.env[key]) }),
         {
           APP_VERSION: JSON.stringify(APP_VERSION),
+          'process.env.REACT_APP_GOOGLE_CLIENT_ID': JSON.stringify(
+            process.env.REACT_APP_GOOGLE_CLIENT_ID
+          ),
           'windows.process': { cwd: () => '' }
         }
       )
