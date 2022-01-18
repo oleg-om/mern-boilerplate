@@ -187,6 +187,7 @@ exports.googleAuth = async (req, res) => {
                   email: user.email,
                   roles: authorities,
                   accessToken: token,
+                  picture: user.picture,
                   refreshToken
                 })
 
@@ -224,6 +225,7 @@ exports.googleAuth = async (req, res) => {
                       email: newUser.email,
                       roles: newUser.roles,
                       accessToken: token,
+                      picture: newUser.picture,
                       refreshToken
                     })
                   })

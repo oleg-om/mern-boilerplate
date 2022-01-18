@@ -60,8 +60,15 @@ const Navbar = () => {
               </a>
             </li>
             <li className="nav-item ms-3">
-              <a className="btn bg-black text-white rounded-lg" href="/login">
-                <FontAwesomeIcon icon={faUser} />{' '}
+              <a
+                className="btn bg-black text-white rounded-lg d-flex align-items-center"
+                href="/login"
+              >
+                {currentUser && currentUser.picture ? (
+                  <img src={currentUser.picture} alt="" className="navbar__picture mx-2" />
+                ) : (
+                  <FontAwesomeIcon icon={faUser} />
+                )}
                 {currentUser && currentUser.email ? currentUser.email : 'Sign in'}
               </a>
             </li>

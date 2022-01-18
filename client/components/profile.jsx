@@ -32,6 +32,9 @@ const Profile = (props) => {
           <strong>{currentUser.username}</strong> Profile
         </h3>
       </header>
+      {currentUser && currentUser.picture ? (
+        <img src={currentUser.picture} alt="" className="profile__picture mx-2" />
+      ) : null}
       <p>
         <strong>Token:</strong> {currentUser.accessToken.substring(0, 20)} ...{' '}
         {currentUser.accessToken.substr(currentUser.accessToken.length - 20)}
