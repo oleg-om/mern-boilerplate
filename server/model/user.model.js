@@ -20,18 +20,24 @@ const User = new mongoose.Schema({
     default: () => uuid.v4()
   },
   lang: {
-    type: String,
-    default: () => 'ENG'
+    type: String
   },
   picture: {
     type: String
+  },
+  settings: {
+    type: Object
   },
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Role'
     }
-  ]
+  ],
+  date: {
+    type: Date,
+    default: () => new Date()
+  }
 })
 
 module.exports = mongoose.model('User', User)

@@ -19,7 +19,6 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   })
 
-  // eslint-disable-next-line no-shadow
   user.save((err) => {
     if (err) {
       res.status(500).send({ message: err })
@@ -163,71 +162,78 @@ exports.googleAuth = async (req, res) => {
     .then((response) => {
       const { email_verified, name, email, picture } = response.payload
       if (email_verified) {
-        User.findOne({ email }).exec((err, user) => {
-          if (err) {
-            console.log('error')
-            return res.status(403).json({
-              message: 'Something went wrong...'
-            })
-          } else {
-            if (user) {
-              const token = jwt.sign({ id: user.id }, config.secret, {
-                expiresIn: config.jwtExpiration
+        User.findOne({ email })
+          .populate('roles', '-__v')
+          .exec((err, user) => {
+            if (err) {
+              console.log('error')
+              return res.status(403).json({
+                message: 'Something went wrong...'
               })
-              const authorities = []
-
-              for (let i = 0; i < user.roles.length; i++) {
-                authorities.push(`ROLE_${user.roles[i].name.toUpperCase()}`)
-              }
-
-              res.json({
-                id: user._id,
-                username: user.name,
-                email: user.email,
-                roles: authorities,
-                accessToken: token,
-                refreshToken
-              })
-              console.log('user exist')
-              return () => {}
             } else {
-              const password = bcrypt.hashSync(`${email}$${config.REACT_APP_GOOGLE_CLIENT_ID}`, 8)
-              const newUser = new User({ username: name, email, password, picture, roles: [] })
-
-              // get role
-
-              Role.findOne({ name: 'user' }, (error, role) => {
-                if (error) {
-                  res.status(500).send({ message: error })
-                  return
-                }
-
-                newUser.roles = [role._id]
-              })
-
-              newUser.save((error, data) => {
-                if (error) {
-                  return res.status(403).json({
-                    message: 'Something went wrong...'
-                  })
-                }
-                const token = jwt.sign({ id: data._id }, config.secret, {
+              if (user) {
+                const token = jwt.sign({ id: user.id }, config.secret, {
                   expiresIn: config.jwtExpiration
                 })
+                const authorities = []
+
+                for (let i = 0; i < user.roles.length; i++) {
+                  authorities.push(`ROLE_${user.roles[i].name.toUpperCase()}`)
+                }
+
                 res.json({
-                  id: newUser._id,
-                  username: newUser.name,
-                  email: newUser.email,
-                  roles: newUser.roles,
+                  id: user._id,
+                  username: user.name,
+                  email: user.email,
+                  roles: authorities,
                   accessToken: token,
                   refreshToken
                 })
-              })
-              console.log('user is created')
+
+                return () => {}
+              } else {
+                const password = bcrypt.hashSync(`${email}$${config.REACT_APP_GOOGLE_CLIENT_ID}`, 8)
+                const newUser = new User({
+                  username: name,
+                  email,
+                  password,
+                  picture
+                })
+
+                Role.findOne({ name: 'user' }, (er, role) => {
+                  if (er) {
+                    res.status(500).send({ message: er })
+                    return
+                  }
+
+                  newUser.roles = [role._id]
+
+                  newUser.save((error, data) => {
+                    if (error) {
+                      return res.status(403).json({
+                        message: 'Something went wrong...'
+                      })
+                    }
+
+                    const token = jwt.sign({ id: data._id }, config.secret, {
+                      expiresIn: config.jwtExpiration
+                    })
+                    res.json({
+                      id: newUser._id,
+                      username: newUser.name,
+                      email: newUser.email,
+                      roles: newUser.roles,
+                      accessToken: token,
+                      refreshToken
+                    })
+                  })
+                })
+
+                console.log('user is created')
+              }
             }
-          }
-          return () => {}
-        })
+            return () => {}
+          })
       }
     })
 
