@@ -7,6 +7,7 @@ const Register = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [language, setLanguage] = useState('en')
   const [successful, setSuccessful] = useState(false)
 
   const { message } = useSelector((state) => state.message)
@@ -24,14 +25,30 @@ const Register = () => {
     setPassword(e.target.value)
   }
 
+  const onChangeLang = (e) => {
+    setLanguage(e.target.value)
+  }
+
+  // check fields
+
+  const ValidateEmail = () => {
+    if (/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      return true
+    }
+    // alert('You have entered an invalid email address!')
+    return true
+  }
+
   const handleRegister = () => {
-    dispatch(register(username, email, password))
-      .then(() => {
-        setSuccessful(true)
-      })
-      .catch(() => {
-        setSuccessful(false)
-      })
+    if (ValidateEmail()) {
+      dispatch(register(username, email, password, language))
+        .then(() => {
+          setSuccessful(true)
+        })
+        .catch(() => {
+          setSuccessful(false)
+        })
+    }
   }
 
   return (
@@ -77,6 +94,19 @@ const Register = () => {
                   value={password}
                   onChange={onChangePassword}
                 />
+              </div>
+              <div className="form-group">
+                <label htmlFor="language">language</label>
+                <select
+                  type="language"
+                  className="form-control"
+                  name="language"
+                  value={language}
+                  onChange={onChangeLang}
+                >
+                  <option value="en">English</option>
+                  <option value="ru">Russian</option>
+                </select>
               </div>
 
               <div className="form-group">

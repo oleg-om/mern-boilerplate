@@ -98,6 +98,7 @@
         "i18next-browser-languagedetector": "^6.1.2",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^6.1.6",
+        "nodemailer": "^6.7.2",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",
         "react-bootstrap": "^2.1.1",

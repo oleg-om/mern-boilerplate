@@ -99,6 +99,7 @@ const Login = (props) => {
               onFailure={handleLoginGoogle}
               cookiePolicy="single_host_origin"
             />
+            <a href="/register">Register</a>
           </div>
 
           {message && (

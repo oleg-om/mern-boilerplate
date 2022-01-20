@@ -6,36 +6,36 @@ const User = db.user
 
 const checkDuplicateUsernameOrEmail = (req, res, next) => {
   // Username
+  // User.findOne({
+  //   username: req.body.username
+  // }).exec((err, user) => {
+  //   if (err) {
+  //     res.status(500).send({ message: err })
+  //     return
+  //   }
+
+  //   if (user) {
+  //     res.status(400).send({ message: 'Failed! Username is already in use!' })
+  //     return
+  //   }
+
+  // Email
   User.findOne({
-    username: req.body.username
-  }).exec((err, user) => {
-    if (err) {
-      res.status(500).send({ message: err })
+    email: req.body.email
+  }).exec((error, usr) => {
+    if (error) {
+      res.status(500).send({ message: error })
       return
     }
 
-    if (user) {
-      res.status(400).send({ message: 'Failed! Username is already in use!' })
+    if (usr) {
+      res.status(400).send({ message: 'Failed! Email is already in use!' })
       return
     }
 
-    // Email
-    User.findOne({
-      email: req.body.email
-    }).exec((error, usr) => {
-      if (error) {
-        res.status(500).send({ message: error })
-        return
-      }
-
-      if (usr) {
-        res.status(400).send({ message: 'Failed! Email is already in use!' })
-        return
-      }
-
-      next()
-    })
+    next()
   })
+  // })
 }
 
 const checkRolesExisted = (req, res, next) => {
@@ -53,9 +53,34 @@ const checkRolesExisted = (req, res, next) => {
   next()
 }
 
+const сheckFields = (req, res, next) => {
+  const ValidateEmail = (email) => {
+    if (email.length > 2 && /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      return true
+    }
+    //   alert('You have entered an invalid email address!')
+    return false
+  }
+  const mediumPassword =
+    /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{6,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/
+  if (!ValidateEmail(req.body.email)) {
+    res.status(400).send({
+      message: `You have entered an invalid email address!`
+    })
+  }
+  if (req.body.password.length > 5 && mediumPassword.test(req.body.password)) {
+    res.status(400).send({
+      message: `Password is not strong enough!`
+    })
+  }
+
+  next()
+}
+
 const verifySignUp = {
   checkDuplicateUsernameOrEmail,
-  checkRolesExisted
+  checkRolesExisted,
+  сheckFields
 }
 
 module.exports = verifySignUp

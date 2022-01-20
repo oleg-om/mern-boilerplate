@@ -12,7 +12,11 @@ const options = {
   jwtExpiration: 3600, // 1 hour
   jwtRefreshExpiration: 86400, // 24 hours
   REACT_APP_GOOGLE_CLIENT_ID: process.env.REACT_APP_GOOGLE_CLIENT_ID,
-  GOOGLE_MY_CLIENT_SECRET: process.env.GOOGLE_MY_CLIENT_SECRET
+  GOOGLE_MY_CLIENT_SECRET: process.env.GOOGLE_MY_CLIENT_SECRET,
+  EMAIL_HOST: process.env.EMAIL_HOST,
+  EMAIL_SERVICE: process.env.EMAIL_SERVICE,
+  EMAIL_USER: process.env.EMAIL_USER,
+  EMAIL_PASSWORD: process.env.EMAIL_PASSWORD
 }
 
 module.exports = options

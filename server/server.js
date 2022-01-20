@@ -19,6 +19,8 @@ const categoryRouter = require('./routes/category')
 const takeProducts = require('./services/updateExchange')
 require('colors')
 
+// const sendEmail = require('./services/emailVerification')
+
 let Root
 try {
   // eslint-disable-next-line import/no-unresolved
@@ -28,6 +30,8 @@ try {
 }
 
 let connections = []
+
+// sendEmail('olegoriginal@yandex.ru', 'subj', 'email wow')
 
 connectDatabase()
 setInterval(takeProducts, 3600000)
