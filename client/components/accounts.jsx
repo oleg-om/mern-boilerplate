@@ -262,7 +262,7 @@ const Accounts = () => {
         list.length > 0 &&
         list.map((it) => (
           <div
-            className="d-flex flex-row justify-content-between border border-light rounded-lg mb-2 p-2"
+            className="block round d-flex flex-row justify-content-between border border-light rounded-lg mb-2 p-2"
             key={it.id}
           >
             <span className="d-flex flex-row align-items-center">
@@ -272,12 +272,16 @@ const Accounts = () => {
               </button>
             </span>
             <span className="d-flex flex-row">
-              <button type="button" className="btn btn-outline-primary" onClick={() => onEdit(it)}>
+              <button
+                type="button"
+                className="round theme__blue-border theme__blue-text btn btn-outline-primary"
+                onClick={() => onEdit(it)}
+              >
                 <FontAwesomeIcon icon={faEdit} />
               </button>
               <button
                 type="button"
-                className="btn btn-outline-danger ms-2"
+                className="round  theme__red-border theme__red-text btn btn-outline-danger ms-2"
                 onClick={() => onDelete(it)}
               >
                 <FontAwesomeIcon icon={faTrashAlt} />

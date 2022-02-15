@@ -36,7 +36,7 @@ const Pagination = ({ quantity, active, func }) => {
   useEffect(() => {}, [])
   return (
     <nav aria-label="...">
-      <ul className="pagination justify-content-end">
+      <ul className="round pagination justify-content-end">
         <li
           className={cx('page-item', {
             disabled: page <= 1

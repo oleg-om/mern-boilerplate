@@ -1,4 +1,6 @@
-# React Redux boilerplate
+# MERN boilerplate
+
+React, redux, mongo, express, basic crud functionality, bootstrap 5, i18 multi-lang, google auth, email && pass login and registration 
 
 ## Quick start
 

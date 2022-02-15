@@ -1,3 +1,9 @@
+@font-face {
+  font-family: "Ubuntu Regular";
+  src: url("../fonts/ubuntu-v19-latin_cyrillic-ext-regular.woff2") format("woff2"),
+       url("../fonts/ubuntu-v19-latin_cyrillic-ext-regular.woff") format("woff");
+}
+
 label {
     display: block;
     margin-top: 10px;
@@ -56,6 +62,12 @@ label {
   $blue__color: #6DD3CE;
   $violet__color: #8332AC;
 
+  $blue__theme:  #4f79f6;
+  $black__theme: #293237;
+  $white_theme: #fbfbfb;
+  $gray__theme: #efefef;
+  $red__theme: #f64f6a;
+
   .sunray__text {
     color: $sunray__color;
   }
@@ -79,6 +91,55 @@ label {
   }
 
   // bg colors
+.theme__blue-bg {
+  background-color:  $blue__theme;
+}
+.theme__black-bg {
+  background-color:   $black__theme;
+}
+.theme__white-bg {
+  background-color:   $white_theme;
+}
+.theme__gray-bg {
+  background-color:  $gray__theme;
+}
+
+.theme__blue-text{
+ color: $blue__theme
+}
+.theme__black-text {
+ color:   $black__theme;
+}
+.theme__white-text {
+  color:   $white_theme;
+}
+.theme__gray-text {
+ color:  $gray__theme;
+}
+
+.theme__red-text {
+  color:  $red__theme;
+ }
+
+.theme__blue-border{
+  border-color: $blue__theme
+ }
+
+ .theme__red-border{
+  border-color: $red__theme
+ }
+
+.color__green-bg {
+  background-color: #7db870;
+}
+.color__red-bg {
+  background-color: #c06a53;
+}
+.color__blue-bg {
+  background-color: #617ec0;
+}
+
+
 
   .sunray__bg {
     background-color: $sunray__color;
@@ -129,4 +190,17 @@ label {
   height: 90px;
   width: 90px;
   z-index: 0;
+}
+
+body {
+  background-color: $gray__theme;
+  font-family: "Ubuntu Regular";
+  color: $black__theme;
+}
+
+.block {
+  background-color: $white_theme;
+}
+.round {
+  border-radius: 1rem;
 }

@@ -1,7 +1,7 @@
 {
-    "name": "money-tracker",
+    "name": "react-express-mongo-boilerplate",
     "version": "0.0.2",
-    "description": "Money Tracker",
+    "description": "React 17 boilerplate",
     "main": "index.js",
     "scripts": {
         "docker-start-dev": "docker-compose -f \"docker\\DEV.docker-compose.yml\" up",

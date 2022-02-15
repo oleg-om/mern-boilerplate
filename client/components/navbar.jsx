@@ -61,7 +61,7 @@ const Navbar = () => {
             </li>
             <li className="nav-item ms-3">
               <a
-                className="btn bg-black text-white rounded-lg d-flex align-items-center"
+                className="btn theme__white-text round theme__black-bg rounded-lg d-flex align-items-center"
                 href="/login"
               >
                 {currentUser && currentUser.picture ? (
