@@ -6,7 +6,7 @@ React, redux, mongo, express, basic crud functionality, bootstrap 5, i18 multi-l
 
 1. Clone this repo using:
   ```shell
-  $ git clone git@github.com:ovasylenko/skillcrucial-react-redux-boilerplate.git
+  $ git clone git@github.com:olegoriginal/mern-boilerplate.git
   ```
 
 2. To install dependencies and clean the git repo run:

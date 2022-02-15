@@ -28,7 +28,7 @@
         "build-storybook": "build-storybook",
         "prepare": "husky install"
     },
-    "author": "",
+    "author": "olegoriginal",
     "license": "MIT",
     "jest": {
         "setupFiles": [
